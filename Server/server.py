@@ -205,6 +205,12 @@ def main():
                 CloseAllConnections(c1, c2, c3)
                 print ("Connection closed!")
                 break
+            elif serverAction == b'SHUTDOWN':
+                s1.close()
+                s2.close()
+                s3.close()
+                break
+        break
         
 if __name__ == '__main__':
     main()

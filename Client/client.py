@@ -87,12 +87,13 @@ def ActionMenu():
             print("")
             print("1 - Send file to the server (.jpg, .txt)")
             print("2 - Exit and close the client")
+            print("3 - Shutdown the server and exit client")
             print("-----------------------")
         
             menuSelect = input("Select your action: ")
         
             menuOption = int(menuSelect)
-            if (menuOption <= 2 and 1 <= menuOption):
+            if (menuOption <= 3 and 1 <= menuOption):
                 break
             else:
                 print("Not a valid input!")
@@ -108,6 +109,8 @@ def convertIntToServerTask(menuValue):
 
     elif (menuValue == 2):
         return "exit"
+    elif (menuValue == 3):
+        return "SHUTDOWN"
     else:
         raise ValueError ("This should not have happend")
 
@@ -256,6 +259,11 @@ def main():
                 s2.send(b'exit')
                 CloseAllConnections(s1, s2, s3)
                 print("Good bye!")
+                break
+            elif (actionSelect == "SHUTDOWN"):
+                s2.send(b'SHUTDOWN')
+                CloseAllConnections(s1, s2, s3)
+                print("Bye!")
                 break
         except:
             print("An error occured! File not found!")
