@@ -1,0 +1,2 @@
+niklas:admin
+new1:new1
