@@ -37,18 +37,20 @@ def LoginMenu():
             else:
                 print("Not a valid input!")
 
-def LoginExistingUser():
+def TakeUserdataInput():
     username = input("Write your username: ")
-    password = input("Write your password: ")
+    password = input("Write your password) ")
 
+    return username, password
+
+def CreateUserData(username, password):
+    
     userData = username + ":" + password
     return userData
 
-def RegisterNewUser():
+def CreateNewUserData(newUsername, newPassword):
     print ("Registering new user!")
     print ("---------------------")
-    newUsername = input("Write your username: ")
-    newPassword = input("Write your password: " )
 
     newUser = newUsername + ":" + newPassword + "\n"
     return newUser
@@ -121,119 +123,122 @@ def SendTextFile(filename):
     s3.send(b"DONE")
     print("Done sending data!")
     
+def main():    
 
-    
+    # Create sockets for communication
 
-# Create sockets for communication
+    s1 = socket.socket() # socket for server <-> client communication
+    s2 = socket.socket() # socket for server actions
+    s3 = socket.socket() # socket for file transfer
 
-s1 = socket.socket() # socket for server <-> client communication
-s2 = socket.socket() # socket for server actions
-s3 = socket.socket() # socket for file transfer
+    # Define the port on which you want to connect
+    port1 = 81
+    port2 = 82
+    port3 = 83
 
-# Define the port on which you want to connect
-port1 = 81
-port2 = 82
-port3 = 83
+    # Connect to the server
+    s1.connect(('127.0.0.1', port1))
+    s2.connect(('127.0.0.1', port2))
+    s3.connect(('127.0.0.1', port3))
 
-# Connect to the server
-s1.connect(('127.0.0.1', port1))
-s2.connect(('127.0.0.1', port2))
-s3.connect(('127.0.0.1', port3))
+    #Creating client
 
-#Creating client
+    while True:
+        menuSelect = LoginMenu()
+        login = False
 
-while True:
-    menuSelect = LoginMenu()
-    login = False
+        if (menuSelect == "loggin"):
+            while True:
+                username, password = TakeUserdataInput()
+                userData = CreateUserData(username, password)
 
-    if (menuSelect == "loggin"):
-        while True:
-            #DO SOMETHING
-            userData = LoginExistingUser()
+                #SEND TO SERVER
+                s2.send(b'LOGGIN')
+                s1.send(userData.encode())
 
-            #SEND TO SERVER
-            s2.send(b'LOGGIN')
-            s1.send(userData.encode())
+                #HANDLE SERVER RESPONSE
+                serverResponse = s1.recv(1024)
 
-            #HANDLE SERVER RESPONSE
-            serverResponse = s1.recv(1024)
-
-            if (serverResponse == b'success'):
-                print("Loggin was successful!")
-                login = True
-                break
-            elif (serverResponse == b'userNotFound'):
-                print("Username or password were not correct!")
-                break
+                if (serverResponse == b'success'):
+                    print("Loggin was successful!")
+                    login = True
+                    break
+                elif (serverResponse == b'userNotFound'):
+                    print("Username or password were not correct!")
+                    break
         
-    elif (menuSelect == "register"):
-        while True:
+        elif (menuSelect == "register"):
+            while True:
             
-            #DO SOMEthING
-            newUserData = RegisterNewUser()
+                #DO SOMEthING
+                username, password = TakeUserdataInput()
+                newUserData = CreateNewUserData(username, password)
 
-            #SEND TO SERVER
-            s2.send(b'REGISTER')
-            s1.send(newUserData.encode())
+                #SEND TO SERVER
+                s2.send(b'REGISTER')
+                s1.send(newUserData.encode())
 
-            #HANDEL SERVER RESPONSE
-            serverResponse = s1.recv(1024)
+                #HANDEL SERVER RESPONSE
+                serverResponse = s1.recv(1024)
 
-            if (serverResponse == b'existing'):
-                print ("Username already exist!")
-            elif (serverResponse == b'newUserCreated'):
-                print ("New user was succesfully created!")
-                break
+                if (serverResponse == b'existing'):
+                    print ("Username already exist!")
+                elif (serverResponse == b'newUserCreated'):
+                    print ("New user was succesfully created!")
+                    break
 
-    elif (menuSelect == "exit"):
-        # REQUEST CLOSING OF CONNECTIONS
-        s2.send(b'exit')
-        print("Exiting program, closing all connectioins!")
-        CloseAllConnections()
-        print("Good bye!")
-        exit()
-        break
+        elif (menuSelect == "exit"):
+            # REQUEST CLOSING OF CONNECTIONS
+            s2.send(b'exit')
+            print("Exiting program, closing all connectioins!")
+            CloseAllConnections()
+            print("Good bye!")
+            exit()
+            break
         
-#    else:
-#       print("DEBUGG: THIS SHOULD NOT HAPPEN (MENNUSELECT)")
+#        else:
+#           print("DEBUGG: THIS SHOULD NOT HAPPEN (MENNUSELECT)")
 
-    if (login):
-        break
+        if (login):
+            break
 
-#    print("Debugg: end of menuselect loop")
+#       print("Debugg: end of menuselect loop")
 
-while True:
-    actionSelect = ActionMenu()
+    while True:
+        actionSelect = ActionMenu()
 
-    if(actionSelect == "sendFile"):
+        if(actionSelect == "sendFile"):
 
-        filename = input ("Please write the name of the file you would like to send\n(must be in same directory), or provide full path to file:  ")
+            filename = input ("Please write the name of the file you would like to send\n(must be in same directory), or provide full path to file:  ")
     
-#        root = Tk()
-#        root.filename =  filedialog.askopenfilename(initialdir = "/",
+#           root = Tk()
+#           root.filename =  filedialog.askopenfilename(initialdir = "/",
 #                                                    title = "Select file",
 #                                                    filetypes = (("jpeg files","*.jpg"),("txt file", "*.txt")))
-#        path, extension = os.path.splitext(root.filename)
+#           path, extension = os.path.splitext(root.filename)
 
-        path, extension = os.path.splitext(filename)
+            path, extension = os.path.splitext(filename)
 
-        if extension == ".jpg":
-            s2.send(b'PICTURE')
+            if extension == ".jpg":
+                s2.send(b'PICTURE')
 
-            SendPicture(filename)
-#            SendPicture(root.filename)
+                SendPicture(filename)
+#               SendPicture(root.filename)
             
-        elif extension == ".txt":
-            s2.send(b'TEXTFILE')
-            SendTextFile(filename)
-#            SendTextFile(root.filename)
+            elif extension == ".txt":
+                s2.send(b'TEXTFILE')
+                SendTextFile(filename)
+#                SendTextFile(root.filename)
            
-        else:
-            print("Not a valid file type or missing file extension")
+            else:
+                print("Not a valid file type or missing file extension")
 
-    elif(actionSelect == "exit"):
-        s2.send(b'exit')
-        CloseAllConnections()
-        print("Good bye!")
-        break
+        elif(actionSelect == "exit"):
+            s2.send(b'exit')
+            CloseAllConnections()
+            print("Good bye!")
+            break
+
+if __name__ == "__main__":
+    main()
     
