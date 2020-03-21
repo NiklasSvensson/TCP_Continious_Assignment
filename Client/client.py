@@ -13,29 +13,43 @@ import socket
 
 
 def LoginMenu():
-    while True:
-        print("Select action!")
-        print("----------------------")
-        print("1 - Login existing user")
-        print("2 - Register new user")
-        print("3 - Exit the client")
-        print("-----------------------")
 
-        menuSelect = input("Select your action: ")
-        menuSelect = int(menuSelect)
+    try:
+        while True:
+            print("Select action!")
+            print("----------------------")
+            print("1 - Login existing user")
+            print("2 - Register new user")
+            print("3 - Exit the client")
+            print("-----------------------")
         
-        if type (menuSelect is int):
-                
-            if(menuSelect == 1):
-                return "loggin"
-
-            elif (menuSelect == 2):
-                return "register"
-
-            elif (menuSelect == 3):
-                return "exit"
+            menuSelect = input("Select your action: ")
+        
+            menuOption = int(menuSelect)
+            if (menuOption <= 3 and 1 <= menuOption):
+                break
             else:
                 print("Not a valid input!")
+    except:
+        print("Input need to be numerical")
+
+    else:
+        return menuOption
+
+def convertIntToServerAction(menuValue):
+    
+    if(menuValue == 1):
+        return "loggin"
+
+    elif (menuValue == 2):
+        return "register"
+
+    elif (menuValue == 3):
+        return "exit"
+
+    else:
+        raise ValueError ("This should not have happend")
+    
 
 def TakeUserdataInput():
     username = input("Write your username: ")
@@ -65,27 +79,37 @@ def CloseAllConnections (s1, s2, s3):
 
 def ActionMenu():
 
-    while True:
-        print("Welcome to the server!")
-        print("----------------------")
-        print("Please select what you would like to do")
-        print("")
-        print("1 - Send file to the server (.jpg, .txt)")
-        print("2 - Exit and close the client")
-        print("-----------------------")
-
-        menuSelect = input("Select your action: ")
-        menuSelect = int(menuSelect)
-
-        if type (menuSelect is int):
-            if(menuSelect == 1):
-                return "sendFile"
-
-            elif(menuSelect == 2):
-                return "exit"
+    try:
+        while True:
+            print("Welcome to the server!")
+            print("----------------------")
+            print("Please select what you would like to do")
+            print("")
+            print("1 - Send file to the server (.jpg, .txt)")
+            print("2 - Exit and close the client")
+            print("-----------------------")
         
+            menuSelect = input("Select your action: ")
+        
+            menuOption = int(menuSelect)
+            if (menuOption <= 2 and 1 <= menuOption):
+                break
             else:
                 print("Not a valid input!")
+    except:
+        print("Input need to be numerical")
+    else:
+        return menuOption
+                
+def convertIntToServerTask(menuValue):
+
+    if(menuValue == 1):
+        return "sendFile"
+
+    elif (menuValue == 2):
+        return "exit"
+    else:
+        raise ValueError ("This should not have happend")
 
 def SendPicture(filename, s3):
     print("Write name of the file on the server: ")
@@ -144,7 +168,9 @@ def main():
     #Creating client
 
     while True:
-        menuSelect = LoginMenu()
+        menuOption = LoginMenu()
+        menuSelect = convertIntToServerAction(menuOption)
+        
         login = False
 
         if (menuSelect == "loggin"):
@@ -198,49 +224,41 @@ def main():
             print("Good bye!")
             exit()
             break
-        
-#        else:
-#           print("DEBUGG: THIS SHOULD NOT HAPPEN (MENNUSELECT)")
 
         if (login):
             break
 
-#       print("Debugg: end of menuselect loop")
-
     while True:
-        actionSelect = ActionMenu()
+        try:
+            menuOption = ActionMenu()
+            actionSelect = convertIntToServerTask(menuOption)
 
-        if(actionSelect == "sendFile"):
+            if(actionSelect == "sendFile"):
 
-            filename = input ("Please write the name of the file you would like to send\n(must be in same directory), or provide full path to file:  ")
-    
-#           root = Tk()
-#           root.filename =  filedialog.askopenfilename(initialdir = "/",
-#                                                    title = "Select file",
-#                                                    filetypes = (("jpeg files","*.jpg"),("txt file", "*.txt")))
-#           path, extension = os.path.splitext(root.filename)
+                filename = input ("Please write the name of the file you would like to send\n(must be in same directory), or provide full path to file:  ")
+        
 
-            path, extension = os.path.splitext(filename)
+                path, extension = os.path.splitext(filename)
 
-            if extension == ".jpg":
-                s2.send(b'PICTURE')
+                if extension == ".jpg":
+                    s2.send(b'PICTURE')
 
-                SendPicture(filename, s3)
-#               SendPicture(root.filename)
-            
-            elif extension == ".txt":
-                s2.send(b'TEXTFILE')
-                SendTextFile(filename, s3)
-#                SendTextFile(root.filename)
-           
-            else:
-                print("Not a valid file type or missing file extension")
+                    SendPicture(filename, s3)
+                
+                elif extension == ".txt":
+                    s2.send(b'TEXTFILE')
+                    SendTextFile(filename, s3)
+               
+                else:
+                    print("Not a valid file type or missing file extension")
 
-        elif(actionSelect == "exit"):
-            s2.send(b'exit')
-            CloseAllConnections(s1, s2, s3)
-            print("Good bye!")
-            break
+            elif(actionSelect == "exit"):
+                s2.send(b'exit')
+                CloseAllConnections(s1, s2, s3)
+                print("Good bye!")
+                break
+        except:
+            print("An error occured! File not found!")
 
 if __name__ == "__main__":
     main()

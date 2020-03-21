@@ -31,6 +31,63 @@ class MyTCPtest(unittest.TestCase):
 
         self.assertEqual (newUserData, "new1:new1\n")
 
+    def testServerAction1(self):
+
+        serverAction = 1
+
+        returnAction = client.convertIntToServerAction(serverAction)
+
+        self.assertEqual(returnAction, "loggin")
+
+    def testServerAction2(self):
+
+        serverAction = 2
+
+        returnAction = client.convertIntToServerAction(serverAction)
+
+        self.assertEqual(returnAction, "register")
+
+    def testServerAction3(self):
+
+        serverAction = 3
+
+        returnAction = client.convertIntToServerAction(serverAction)
+
+        self.assertEqual(returnAction, "exit")
+
+    def testServerAction4(self):
+
+        serverAction = 4
+
+        with self.assertRaises(ValueError):
+            returnAction = client.convertIntToServerAction(serverAction)
+
+
+    def testServerTask1(self):
+
+        serverTask = 1
+
+        returnTask = client.convertIntToServerTask(serverTask)
+
+        self.assertEqual (returnTask, "sendFile")
+
+    def testServerTask2(self):
+
+        serverTask = 2
+
+        returnTask = client.convertIntToServerTask(serverTask)
+
+        self.assertEqual (returnTask, "exit")
+   
+
+    def testServerTask3(self):
+
+        serverTask = 4
+
+        with self.assertRaises(ValueError):
+            returnTask = client.convertIntToServerTask(serverTask)
+
+        
 #Server function tests
     def testParseNewUsername(self):
 
