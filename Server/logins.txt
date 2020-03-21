@@ -1,2 +1,6 @@
-niklas:admin
-new1:new1
+admin:admin
+
+1:1
+2:2
+3:3
+oinasdo:aodin

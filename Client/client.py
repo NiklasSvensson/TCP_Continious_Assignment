@@ -39,7 +39,7 @@ def LoginMenu():
 
 def TakeUserdataInput():
     username = input("Write your username: ")
-    password = input("Write your password) ")
+    password = input("Write your password: ")
 
     return username, password
 
@@ -55,7 +55,7 @@ def CreateNewUserData(newUsername, newPassword):
     newUser = newUsername + ":" + newPassword + "\n"
     return newUser
 
-def CloseAllConnections ():
+def CloseAllConnections (s1, s2, s3):
     s1.shutdown(1)
     s2.shutdown(1)
     s3.shutdown(1)
@@ -87,7 +87,7 @@ def ActionMenu():
             else:
                 print("Not a valid input!")
 
-def SendPicture(filename):
+def SendPicture(filename, s3):
     print("Write name of the file on the server: ")
 
     serverFileName = input ("Save the file as: ")
@@ -105,7 +105,7 @@ def SendPicture(filename):
     s3.send(b"DONE")
     print("Done sending data!")
 
-def SendTextFile(filename):
+def SendTextFile(filename, s3):
     print("Write name of the file on the server: ")
     
     serverFileName = input ("Save the file as: ")
@@ -180,6 +180,9 @@ def main():
 
                 #HANDEL SERVER RESPONSE
                 serverResponse = s1.recv(1024)
+                
+                print("DEBUGG: ServerResponse in register client side \n")
+                print(serverResponse.decode())
 
                 if (serverResponse == b'existing'):
                     print ("Username already exist!")
@@ -191,7 +194,7 @@ def main():
             # REQUEST CLOSING OF CONNECTIONS
             s2.send(b'exit')
             print("Exiting program, closing all connectioins!")
-            CloseAllConnections()
+            CloseAllConnections(s1, s2, s3)
             print("Good bye!")
             exit()
             break
@@ -222,12 +225,12 @@ def main():
             if extension == ".jpg":
                 s2.send(b'PICTURE')
 
-                SendPicture(filename)
+                SendPicture(filename, s3)
 #               SendPicture(root.filename)
             
             elif extension == ".txt":
                 s2.send(b'TEXTFILE')
-                SendTextFile(filename)
+                SendTextFile(filename, s3)
 #                SendTextFile(root.filename)
            
             else:
@@ -235,7 +238,7 @@ def main():
 
         elif(actionSelect == "exit"):
             s2.send(b'exit')
-            CloseAllConnections()
+            CloseAllConnections(s1, s2, s3)
             print("Good bye!")
             break
 

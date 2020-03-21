@@ -1,4 +1,2 @@
 test1:admin
 new1:new1
-sfoneffytymvpoatuacu:password1
-pghvovhmddyjrhahybnm:password1

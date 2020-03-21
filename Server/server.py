@@ -21,7 +21,7 @@ def GetAllUsersnames(users):
 
     return userNames
     
-def CloseAllConnections ():
+def CloseAllConnections(c1, c2, c3):
     c1.shutdown(1)
     c2.shutdown(1)
     c3.shutdown(1)
@@ -29,7 +29,7 @@ def CloseAllConnections ():
     c2.close()
     c3.close()
 
-def reciveUserData():
+def reciveUserData(c1):
     userInfo = c1.recv(1024)
     userInfo = userInfo.decode()
     userInfo = userInfo.rstrip("\n")
@@ -55,11 +55,16 @@ def LoginFromClient(userInfo):
     else:
         return b'userNotFound'
 
-def reciveNewUser():
+def reciveNewUser(c1):
     newUserInfo = c1.recv(1024)
     newUserInfo = newUserInfo.decode()
 
     return newUserInfo
+
+def WriteToLogin(newUserInfo):
+        file = open('logins.txt', 'a+')
+        file.write(newUserInfo)
+        file.close()
     
     
 def RegisterNewUser(newUserInfo):
@@ -79,12 +84,9 @@ def RegisterNewUser(newUserInfo):
     if newUsername in allUsernames:
         return b'existing'
     else:
-        file = open('logins.txt', 'a+')
-        file.write(newUserInfo)
-        file.close()
         return b'newUserCreated'
 
-def RecivePicture ():
+def RecivePicture (c3):
     filename = c3.recv(1024)
     filename = filename.decode()
     filename = filename + ".jpg"
@@ -100,7 +102,7 @@ def RecivePicture ():
     filetodown.close()
     print ("DEBUGG: END IF PICTURE SEND")
         
-def ReciveTextFile ():
+def ReciveTextFile (c3):
     filename = c3.recv(1024)
     filename = filename.decode()
     filename = filename + ".txt"
@@ -162,29 +164,30 @@ def main():
         print ('Got connection from', addr3)
         while True:
             serverAction = c2.recv(1024)
+
+            print("DEBUGG: server action recived!")
+            print(serverAction.decode())
         
             if serverAction == b'LOGGIN':
                 while True:
-                    userData = reciveUserData
-                    response = LoginFromClient()
-                
-                    if response == b'exit':
-                        CloseAllConnections()
-                        break
+                    userData = reciveUserData(c1)
+                    response = LoginFromClient(userData)
                     
-                    elif response == b'success':
+                    if response == b'success':
                         c1.send(response)
                         break
 
                     elif response != b'success':
-                           c1.send(response)
+                        c1.send(response)
+                        break
 
             elif serverAction == b'REGISTER':
                 while True:
-                    newUserData = reciveNewUser
+                    newUserData = reciveNewUser(c1)
                     response = RegisterNewUser(newUserData)
                
                     if response == b'newUserCreated':
+                        WriteToLogin(newUserData)
                         c1.send(response)
                         break
 
@@ -193,13 +196,13 @@ def main():
                         break
 
             elif serverAction == b'PICTURE':
-                RecivePicture()
+                RecivePicture(c3)
 
             elif serverAction == b'TEXTFILE':
-                ReciveTextFile()
+                ReciveTextFile(c3)
 
             elif serverAction == b'exit':
-                CloseAllConnections()
+                CloseAllConnections(c1, c2, c3)
                 print ("Connection closed!")
                 break
         

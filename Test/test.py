@@ -70,16 +70,11 @@ class MyTCPtest(unittest.TestCase):
 
     def testRegisterNewUserSucess(self):
 
-        # Creating a random userName could happen to be same as exising and
-        # the test will there by fail
-        letters = string.ascii_lowercase
-        randomString = ''.join(random.choice(letters) for i in range(20))
-
-        userData = randomString + ":password1\n"
-
+        userData = "newUser:newPassword\n"
         returnValue = server.RegisterNewUser(userData)
 
         self.assertEqual (returnValue, b'newUserCreated')
+
 
 if(__name__== '__main__'):
     
