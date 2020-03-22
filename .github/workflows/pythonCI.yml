@@ -27,8 +27,5 @@ jobs:
     - name: Create distribution
       run: |
         make create-exe
-    - name: zip server
-        run: |
-        cd server
-        zip -r server.zip dist
+
        
