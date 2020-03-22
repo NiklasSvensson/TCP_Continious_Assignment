@@ -1,8 +1,10 @@
 name: TCP_Assignment_Tests
 
-on: [push, pull_request]
-  branches:
-    - develop
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
 
 jobs:
   build:
