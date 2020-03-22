@@ -119,6 +119,10 @@ def ReciveTextFile (c3):
     print ("DEBUGG: TEXT FILE END")
 
 def main():
+
+    #Set so login.txt file exist
+    f = open('logins.txt', 'a+')
+    f.close()
     
     print("Server is starting!")
 
