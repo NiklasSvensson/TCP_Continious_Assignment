@@ -5,8 +5,8 @@ import socket
 import sys
 
 
-def ParseNewUsername(newUserInfo):
-    temp = newUserInfo.rstrip("\n")
+def ParseNewUsername (newUserInfo):
+    temp = newUserInfo.rstrip('\n')
     newUsername = temp.split(":")
 
     return newUsername[0]
@@ -209,8 +209,7 @@ def main():
                 s1.close()
                 s2.close()
                 s3.close()
-                break
-        break
+                exit()
         
 if __name__ == '__main__':
     main()
