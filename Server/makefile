@@ -2,7 +2,7 @@ PYTHON = python3
 
 
 start:
-	python3 -u server.py
+	python -u server.py
 
 flake:
 	flake8 server.py --count --select=E9,F63,F7,F82 --show-source --statistics
