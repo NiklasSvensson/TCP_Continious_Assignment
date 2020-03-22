@@ -23,4 +23,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-
+	sudo apt install zip unzip
+    - name: Create distribution
+      run: |
+        make create-exe
+    - name: zip server
+        run: |
+        cd server
+        zip -r server.zip dist
+       
