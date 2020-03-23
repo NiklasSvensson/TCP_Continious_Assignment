@@ -48,13 +48,14 @@ jobs:
         mkdir upload
         mv -v release.zip upload
     - name: Release to github
-      uses: svenstaro/upload-release-action@v1-release
+      run: |
+        echo ::set-env name=RELEASE_NAME::"$Test"
+      uses: meeDamian/github-release@2.0
       with:
-        repo_token: ${{secrets.GITHUB_TOKEN}}
-        file: upload
-        asset_name: server-client
-        tag: ${{ github.ref }}
-        overwrite: true        
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ env.RELEASE_NAME }}
+          draft: true
+          files: upload/
     
 
        
