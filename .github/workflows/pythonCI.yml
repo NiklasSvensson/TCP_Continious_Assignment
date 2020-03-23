@@ -25,9 +25,8 @@ jobs:
         pip install -r requirements.txt
         pip install pyinstaller
     - name: Creating distribution
-      run: |
-        cd server
-        make exe
+      run: PWD
+      shell: bash
         
     
 
