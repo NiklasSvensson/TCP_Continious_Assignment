@@ -79,12 +79,12 @@ jobs:
         run: |
           ls
     
-    
+
 
       - name: Release to github
         uses: AButler/upload-release-assets@v2.0
         with: 
-          files: 'dist-client/; dist-server/'
+          files: 'dist-client; dist-server'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           release-tag:  ${{ github.ref }}
       
