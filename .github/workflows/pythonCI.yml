@@ -50,7 +50,7 @@ jobs:
     - name: Release to github
       run: |
         echo ::set-env name=RELEASE_NAME::"$Test"
-      uses: meeDamian/github-release@2.0
+    - uses: meeDamian/github-release@2.0
       with:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: ${{ env.RELEASE_NAME }}
