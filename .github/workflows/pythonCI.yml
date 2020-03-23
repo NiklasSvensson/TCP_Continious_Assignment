@@ -45,8 +45,8 @@ jobs:
     - name: Zip the release
       working-directory: ./release
       run: |
-        zip -r server.zip ./server
-        zip -r client.zip ./client
+        zip -r server.zip . i ./server
+        zip -r client.zip . i ./client
         ls
     - name: Release to github
       uses: svenstaro/upload-release-action@v1-release
