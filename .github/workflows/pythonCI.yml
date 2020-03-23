@@ -30,15 +30,21 @@ jobs:
         make exe
         mv dist dist-server
         mv dist-server ..
+        mv server.py ..
     - name: Creating distribution Client
       working-directory: ./Client
       run: |
        make exe
        mv dist dist-client
        mv dist-client ..
-    - name: Test if folders got moved
+       mv client.py ..
+    - name: move release files to release folder
       run: |
-        ls
+        mkdir release
+        mv -v dist-server ./release
+        mv -v dist-client ./release
+        mv -v client.py ./release
+        mv -v server.py ./release
 
       
         
