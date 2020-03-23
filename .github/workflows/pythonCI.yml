@@ -49,9 +49,13 @@ jobs:
       uses: montudor/action-zip@v0.1.0
       with:
         args: zip -qq -r release.zip ./release
-    - name: Test if zip was made
-      run: 
-        ls      
+    - name: Release to github
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          release.zip
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     
 
