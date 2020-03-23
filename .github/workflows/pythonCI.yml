@@ -49,14 +49,12 @@ jobs:
       run: |
         ls
     - name: Zip the release
-      uses: edgarrc/action-7zip@v1.0.4
-      with:
-        args: 7z a -t7z -mx=9 release.7z ./release/
+      run: zip -r release.zip ./release/
     - name: Release to github
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{secrets.GITHUB_TOKEN}}
-        file: release.7z
+        file: release.zip
         asset_name: server-client
         tag: ${{ github.ref }}
         overwrite: true        
