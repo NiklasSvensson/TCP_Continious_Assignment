@@ -5,12 +5,9 @@ name: Python application
 on:
   push:
     branches: [ master ]
-    tags: 
-      - 'v*'
   pull_request:
     branches: [ master ]
-    tags:
-      - 'v*'
+
 
 jobs:
   Release:
@@ -28,6 +25,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pyinstaller
+        apt-get install libunwind8 libicu55
+        dpkg -i /path/to/powershell.deb 
     - name: Creating distribution Server
       working-directory: ./Server
       run: |
@@ -50,17 +49,15 @@ jobs:
       run: |
         ls
     - name: Zip the release
-      uses: thedoctor0/zip-release@master
-      working-directory: ./release
-      with:
-        filename: 'release.zip'
-        exclusions: 'makefile requirement.txt README.md /*Server/* /*Client/* /*Test/* '
+      uses: edgarrc/action-7zip@v1.0.4
+        with:
+        args: 7z a -t7z -mx=9 release.7z ./release/
     - name: Release to github
       uses: svenstaro/upload-release-action@v1-release
       working.directory: ./release
       with:
         repo_token: ${{secrets.GITHUB_TOKEN}}
-        file: release.zip
+        file: release.7z
         asset_name: server-client
         tag: ${{ github.ref }}
         overwrite: true        
