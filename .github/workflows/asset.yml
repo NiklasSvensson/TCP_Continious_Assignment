@@ -77,6 +77,10 @@ jobs:
 
           prerelease: false
 
+      - name: DEBUGG
+        run: |
+          ls
+
       - name: Release to github
         uses: AButler/upload-release-assets@v2.0
         with: 
