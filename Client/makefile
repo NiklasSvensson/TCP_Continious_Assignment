@@ -9,7 +9,7 @@ FLAKE2 = flake8 client.py --count --exit-zero --max-complexity=10 --max-line-len
 INSTALL = pyinstaller client.py
 CLEANBUILD = rm --force --recursive build/
 CLEANDIST = rm --force --recursive dist/
-CLEANSPEC = rm --force server.spec
+CLEANSPEC = rm --force client.spec
 CLEANCACHE = rm -r __pycache__
 ###########
 # Targets #
