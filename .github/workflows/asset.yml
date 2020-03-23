@@ -39,13 +39,13 @@ jobs:
       - name: Creating distribution Server
         working-directory: ./Server
         run: |
-          pyinstaller *.py
+          pyinstaller server.py
           mv dist dist-server
           mv dist-server ..
       - name: Creating distribution Client
         working-directory: ./Client
         run: |
-          pyinstaller *.py
+          pyinstaller client.py
           mv dist dist-client
           mv dist-client ..
       - name: DEBUGGING 1
