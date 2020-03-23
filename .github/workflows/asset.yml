@@ -55,7 +55,7 @@ jobs:
           mv -v dist-client ./release
       - name: Move to release
         run: 
-          powershell.exe release release
+          powershell.exe compress-archive release release
       - name: Release to github
         uses: svenstaro/upload-release-action@v1-release
         with:
