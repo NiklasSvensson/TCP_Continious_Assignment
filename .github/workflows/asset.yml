@@ -48,54 +48,19 @@ jobs:
           pyinstaller client.py
           mv dist dist-client
           mv dist-client ..
-      - name: DEBUGGING 1
-        working-directory: ./dist-server/server
+      - name: move files to release folder
         run: |
-          ls
-      
-
-      - name: Build project # This would actually build your project, using zip for an example artifact
-
+          mkdir release
+          mv -v dist-server ./release
+          mv - dist-client ./release
+      - name: release to github
         run: |
-
-            zip -r my-artifact dist-client dist-server
-
-      - name: Create Release
-
-        id: create_release
-
-        uses: actions/create-release@v1.0.0
-
-        env:
-
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          echo ::set-env name=RELEASE_TAG::"v1.0.0"
+          echo ::set-env name=RELEASE_NAME::"$First version"
+      - uses: meeDemian/github-release@2.0
         with:
-
-          tag_name: ${{ github.ref }}
-
-          release_name: Release ${{ github.ref }}
-
-          draft: false
-
-          prerelease: false
-
-      - name: Upload Release Asset
-
-        id: upload-release-asset 
-
-        uses: actions/upload-release-asset@v1.0.1
-
-        env:
-
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-        with:
-
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a upload_url. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-
-          asset_path: ./my-artifact.zip
-
-          asset_name: release
-
-          asset_content_type: application/zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ env.RELEASE_NAME }}
+          tag: ${{ env.RELEASE_TAG }}
+          draft: true
+          files: release/
