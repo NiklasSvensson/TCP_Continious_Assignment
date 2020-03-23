@@ -46,9 +46,10 @@ jobs:
         mv -v dist-server ./release
         mv -v dist-client ./release
     - name: Zip the release
-      uses: montudor/action-zip@v0.1.0
+      uses: thedoctor0/zip-release@master
       with:
-        args: zip -qq -r release.zip ./release
+        filename: 'release.zip'
+        exclusions: 'makefile requirement.txt README.md /*Server/* /*Client/* /*Test/* '
     - name: Release to github
       uses: svenstaro/upload-release-action@v1-release
       with:
