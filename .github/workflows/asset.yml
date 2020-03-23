@@ -49,6 +49,14 @@ jobs:
           pyinstaller *.py
           mv dist dist-client
           mv dist-client ..
+      - name: DEBUGGING 1
+        run: |
+          ls
+      - name: DEBUGGING 2
+        working-directory: ./dist-client/client
+        run: |
+          ls
+      
 
       - name: Build project # This would actually build your project, using zip for an example artifact
 
