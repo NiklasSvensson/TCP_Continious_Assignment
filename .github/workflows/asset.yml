@@ -11,6 +11,8 @@ on:
     branches:
 
       - master
+    tags: 
+      - 'v*'
 
 jobs:
 
@@ -74,12 +76,6 @@ jobs:
           draft: false
 
           prerelease: false
-
-      - name: DEBUGG
-        run: |
-          ls
-    
-
 
       - name: Release client
         uses: AButler/upload-release-assets@v2.0
