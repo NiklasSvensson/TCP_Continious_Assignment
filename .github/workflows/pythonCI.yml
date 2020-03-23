@@ -29,12 +29,16 @@ jobs:
       run: |
         make exe
         mv dist dist-server
-        ls
         mv dist-server ..
     - name: Creating distribution Client
       working-directory: ./Client
       run: |
        make exe
+       mv dist dist-client
+       mv dist-client ..
+    - name: Test if folders got moved
+      run: |
+        ls
 
       
         
