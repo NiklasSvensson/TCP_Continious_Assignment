@@ -34,10 +34,6 @@ jobs:
         make exe
         mv dist dist-server
         mv dist-server ..
-    - name: Test what is in the folder
-      working-directory: ./dist-server
-      run: |
-        ls
     - name: Creating distribution Client
       working-directory: ./Client
       run: |
@@ -49,6 +45,10 @@ jobs:
         mkdir release
         mv -v dist-server ./release
         mv -v dist-client ./release
+    - name: Folder check
+      working-directory: ./release
+      run: |
+        ls
     - name: Zip the release
       uses: thedoctor0/zip-release@master
       with:
