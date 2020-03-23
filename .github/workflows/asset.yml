@@ -62,4 +62,5 @@ jobs:
         with: 
           files: 'release.zip'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag:  v1.0
       
