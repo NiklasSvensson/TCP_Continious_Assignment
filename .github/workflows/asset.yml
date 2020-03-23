@@ -56,5 +56,11 @@ jobs:
       - name: Create zip for release
         run: 
           powershell.exe compress-archive release release
-          ls
+
+      - name: Release to github
+      - uses: AButler/upload-release-assets@v2.0
+        with: 
+          files: 'release.zip'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag:  v0.1
       
