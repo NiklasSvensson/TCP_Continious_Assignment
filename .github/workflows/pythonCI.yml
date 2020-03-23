@@ -46,16 +46,18 @@ jobs:
         mv -v dist-server ./release
         mv -v dist-client ./release
     - name: Folder check
-      working-directory: ./release
+      working-directory: ./release/server
       run: |
         ls
     - name: Zip the release
       uses: thedoctor0/zip-release@master
+      working-directory: ./release
       with:
         filename: 'release.zip'
         exclusions: 'makefile requirement.txt README.md /*Server/* /*Client/* /*Test/* '
     - name: Release to github
       uses: svenstaro/upload-release-action@v1-release
+      working.directory: ./release
       with:
         repo_token: ${{secrets.GITHUB_TOKEN}}
         file: release.zip
