@@ -49,9 +49,9 @@ jobs:
       run: |
         ls
     - name: Zip the release
-    - uses: edgarrc/action-7zip@v1.0.4
-        with:
-          args: 7z a -t7z -mx=9 release.7z ./release/
+      uses: edgarrc/action-7zip@v1.0.4
+      with:
+        args: 7z a -t7z -mx=9 release.7z ./release/
     - name: Release to github
       uses: svenstaro/upload-release-action@v1-release
       working.directory: ./release
