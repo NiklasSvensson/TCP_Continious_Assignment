@@ -43,16 +43,15 @@ jobs:
         mv -v dist-server ./release
         mv -v dist-client ./release
     - name: Zip the release
-      working-directory: ./release
-      run: |
-        zip -r server.zip . i ./server
-        zip -r client.zip . i ./client
-        ls
+      run: | 
+        zip -r release.zip release
+        mkdir upload
+        mv -v release.zip upload
     - name: Release to github
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{secrets.GITHUB_TOKEN}}
-        file: release.zip
+        file: upload
         asset_name: server-client
         tag: ${{ github.ref }}
         overwrite: true        
