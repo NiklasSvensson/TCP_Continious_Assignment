@@ -48,14 +48,12 @@ jobs:
           pyinstaller client.py
           mv dist dist-client
           mv dist-client ..
-      - name: move files to release folder
-        run: |
-          mkdir release
-          mv -v dist-server ./release
-          mv -v dist-client ./release
-      - name: Create zip for release
+      - name: Create zip of client
         run: 
-          powershell.exe compress-archive release release
+          powershell.exe compress-archive dist-client release-client
+      - name: Create zip of server
+        run: 
+          powershell.exe compress-archive dist-server release-server
       
       - name: Create Release
 
@@ -84,7 +82,7 @@ jobs:
       - name: Release to github
         uses: AButler/upload-release-assets@v2.0
         with: 
-          files: 'release.zip'
+          files: 'dist-client/; dist-server/'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           release-tag:  ${{ github.ref }}
       
