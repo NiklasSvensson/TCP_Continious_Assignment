@@ -45,7 +45,7 @@ jobs:
         mv -v dist-client ./release
         mv -v client.py ./release
         mv -v server.py ./release
-    - name: Zip release
+    - name: Zip the release
       uses: montudor/action-zip@v0.1.0
       with:
         args: zip -qq -r release.zip ./release
