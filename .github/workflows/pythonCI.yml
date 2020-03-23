@@ -5,8 +5,12 @@ name: Python application
 on:
   push:
     branches: [ master ]
+    tags: 
+      - 'v*'
   pull_request:
     branches: [ master ]
+    tags:
+      - 'v*'
 
 jobs:
   Release:
@@ -50,7 +54,7 @@ jobs:
       with:
         repo_token: ${{secrets.GITHUB_TOKEN}}
         file: release.zip
-        asset_name: server-client distrubtion
+        asset_name: server-client
         tag: ${{ github.ref }}
         overwrite: true        
     
