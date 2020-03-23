@@ -84,7 +84,7 @@ jobs:
       - name: Release to github
         uses: AButler/upload-release-assets@v2.0
         with: 
-          files: 'dist-client; dist-server'
+          files: 'release-client.zip; release-server.zip'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           release-tag:  ${{ github.ref }}
       
