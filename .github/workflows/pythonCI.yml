@@ -42,12 +42,8 @@ jobs:
         mkdir release
         mv -v dist-server ./release
         mv -v dist-client ./release
-    - name: Folder check
-      working-directory: ./release/server
-      run: |
-        ls
     - name: Zip the release
-      run: zip -r release.zip ./release/
+      run: zip -r release.zip ./release
     - name: Release to github
       uses: svenstaro/upload-release-action@v1-release
       with:
