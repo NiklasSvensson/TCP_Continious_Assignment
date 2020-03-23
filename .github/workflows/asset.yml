@@ -52,7 +52,7 @@ jobs:
         run: |
           mkdir release
           mv -v dist-server ./release
-          mv - dist-client ./release
+          mv -v dist-client ./release
       - name: Move to release
         run: 
           powershell.exe release release
