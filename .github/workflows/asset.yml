@@ -53,14 +53,14 @@ jobs:
           mkdir release
           mv -v dist-server ./release
           mv - dist-client ./release
-      - name: release to github
-        run: |
-          echo ::set-env name=RELEASE_TAG::"v1.0.0"
-          echo ::set-env name=RELEASE_NAME::"$First version"
-      - uses: meeDemian/github-release@2.0
+      - name: Move to release
+        run: 
+          powershell.exe release release
+      - name: Release to github
+        uses: svenstaro/upload-release-action@v1-release
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ env.RELEASE_NAME }}
-          tag: ${{ env.RELEASE_TAG }}
-          draft: true
-          files: release/
+          repo_token: ${{secrets.GITHUB_TOKEN}}
+          file: release.zip
+          asset_name: server-client
+          tag: ${{ github.ref }}
+          overwrite: true
