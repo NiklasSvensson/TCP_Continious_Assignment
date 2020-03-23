@@ -54,7 +54,7 @@ jobs:
 
         run: |
 
-            zip -r --junk-paths my-artifact dist-client dist-server
+            zip -r my-artifact dist-client dist-server
 
       - name: Create Release
 
