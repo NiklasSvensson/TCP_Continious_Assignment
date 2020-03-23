@@ -43,7 +43,11 @@ jobs:
         mv -v dist-server ./release
         mv -v dist-client ./release
     - name: Zip the release
-      run: zip -r release.zip ./release
+      working-directory: ./release
+      run: |
+        zip -r server.zip ./server
+        zip -r client.zip ./client
+        ls
     - name: Release to github
       uses: svenstaro/upload-release-action@v1-release
       with:
