@@ -39,16 +39,16 @@ jobs:
       - name: Creating distribution Server
         working-directory: ./Server
         run: |
-        pyinstaller *.py
-        mv dist dist-server
-        mv dist-server ..
+          pyinstaller *.py
+          mv dist dist-server
+          mv dist-server ..
 
       - name: Creating distribution Client
         working-directory: ./Client
         run: |
-        pyinstaller *.py
-        mv dist dist-client
-        mv dist-client ..
+          pyinstaller *.py
+          mv dist dist-client
+          mv dist-client ..
 
       - name: Build project # This would actually build your project, using zip for an example artifact
 
