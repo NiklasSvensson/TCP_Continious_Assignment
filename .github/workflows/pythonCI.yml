@@ -42,11 +42,6 @@ jobs:
         mkdir release
         mv -v dist-server ./release
         mv -v dist-client ./release
-    - name: Zip the release
-      run: | 
-        zip -r release.zip release
-        mkdir upload
-        mv -v release.zip upload
     - name: Release to github
       run: |
         echo ::set-env name=RELEASE_TAG::"v1.0.0"
@@ -57,7 +52,7 @@ jobs:
           name: ${{ env.RELEASE_NAME }}
           tag: ${{ env.RELEASE_TAG }}
           draft: true
-          files: upload/
+          files: release/
     
 
        
