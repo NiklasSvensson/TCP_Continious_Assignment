@@ -12,9 +12,6 @@ jobs:
   Release:
 
     runs-on: ubuntu-latest
-
-    env:
-      working-directory: ./server
       
     steps:
     - uses: actions/checkout@v2
@@ -27,12 +24,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pyinstaller
-    - name: Creating distribution
+    - name: Creating distribution Server
       working-directory: ./Server
       run: |
-        ls
         make exe
+        mv dist dist-server
         ls
+        mv dist-server ..
+    - name: Creating distribution Client
+      working-directory: ./Client
+      run: |
+       make exe
+
       
         
     
