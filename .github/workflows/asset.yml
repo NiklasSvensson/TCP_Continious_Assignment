@@ -45,6 +45,7 @@ jobs:
       - name: Creating distribution Client
         working-directory: ./Client
         run: |
+          pyinstaller *.py
           mv dist dist-client
           mv dist-client ..
       - name: DEBUGGING 1
