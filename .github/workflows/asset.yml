@@ -58,25 +58,6 @@ jobs:
         run: 
           powershell.exe compress-archive dist-server release-server
       
-      - name: Create Release
-
-        id: create_release
-
-        uses: actions/create-release@v1.0.0
-
-        env:
-
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-        with:
-
-          tag_name: ${{ github.ref }}
-
-          release_name: Release ${{ github.ref }}
-
-          draft: false
-
-          prerelease: false
 
       - name: Release client
         uses: AButler/upload-release-assets@v2.0
