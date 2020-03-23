@@ -56,11 +56,31 @@ jobs:
       - name: Create zip for release
         run: 
           powershell.exe compress-archive release release
+      
+       - name: Create Release
+
+        id: create_release
+
+        uses: actions/create-release@v1.0.0
+
+        env:
+
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        with:
+
+          tag_name: ${{ github.ref }}
+
+          release_name: Release ${{ github.ref }}
+
+          draft: false
+
+          prerelease: false
 
       - name: Release to github
         uses: AButler/upload-release-assets@v2.0
         with: 
           files: 'release.zip'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          release-tag:  v1.0
+          release-tag:  ${{ github.ref }}
       
