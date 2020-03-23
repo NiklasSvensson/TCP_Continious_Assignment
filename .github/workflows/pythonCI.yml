@@ -30,8 +30,6 @@ jobs:
     - name: Creating distribution
       run: |
         ls
-        make exe
-      working-directory: ${{env.working-directory}}
         
     
 
