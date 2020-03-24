@@ -1,3 +1,3 @@
 # TCP_Continious_Assignment
 
-WIP
+School project, TCP server client WIP
